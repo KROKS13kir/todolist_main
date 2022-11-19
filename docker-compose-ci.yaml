@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  frontend:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - 80:80
+    depends_on:
+      - api
+  api:
+    image: specially4/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+  migrations:
+    image: KROKS13kir/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    command: python3 manage.py migrate
+  postgres:
+    image: postgres:12.4-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    restart: always
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
