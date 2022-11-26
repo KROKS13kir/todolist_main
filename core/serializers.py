@@ -1,46 +1,46 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from .models import User
 
 
 class SignUpSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
-    username = serializers.CharField(required=True, max_length=50)
-    first_name = serializers.CharField(required=False, allow_blank=True, max_length=50)
-    last_name = serializers.CharField(required=False, allow_blank=True, max_length=50)
-    email = serializers.EmailField(required=False, allow_blank=True)
-    password = serializers.CharField(required=True)
-
-    def is_valid(self, raise_exception=False):
-        self._password_repeat = self.initial_data.pop('password_repeat')
-        return super().is_valid(raise_exception=raise_exception)
-
-    def validate_username(self, input_username):
-        if self.Meta.model.objects.filter(username=input_username).exists():
-            raise serializers.ValidationError(['User with such username already exists'])
-        return input_username
-
-    def validate_password(self, input_pass):
-        validate_password(input_pass)
-        return input_pass
-
-    def validate(self, data):
-        print(data.get('password'))
-        print(self._password_repeat)
-        if data.get('password') != self._password_repeat:
-            raise serializers.ValidationError({'password_repeat': ['Passwords must match']})
-        return data
-
-    def create(self, validated_data):
-        user = User.objects.create(**validated_data)
-        user.set_password(user.password)
-        user.save()
-        return user
+    username = serializers.CharField(
+        max_length=150,
+        validators=[
+            UniqueValidator(queryset=User.objects.all())
+        ]
+    )
+    password = serializers.CharField(min_length=1, write_only=True, validators=[validate_password])
+    password_repeat = serializers.CharField(min_length=1, write_only=True, validators=[validate_password])
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password']
+        fields = [
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'password',
+            'password_repeat'
+        ]
+
+    def validate(self, attrs):
+        """
+        Переопределил пустой validate для проверки пароля, так же достаю и удаляю password_repeat.
+        """
+        password_repeat = attrs.pop('password_repeat', None)
+        password = attrs.get('password')
+
+        if password_repeat != password:
+            raise ValidationError('Passwords do not match')
+        return attrs
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
 
 
 class LoginSerializer(serializers.Serializer):
@@ -52,23 +52,25 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(["User with such username doesn't exist"])
         return input
 
+
 class RetrieveUpdateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    username = serializers.CharField(required=True, max_length=50)
-    first_name = serializers.CharField(required=False, allow_blank=True, max_length=50)
-    last_name = serializers.CharField(required=False, allow_blank=True, max_length=50)
-    email = serializers.EmailField(required=False, allow_blank=True)
-
-    def validate_username(self, input):
-        current_user = self.context['request'].user
-
-        if self.Meta.objects.filter(username=input).exists() and current_user.username != input:
-            raise serializers.ValidationError(['User with such username already exists'])
-        return input
+    username = serializers.CharField(
+        validators=[
+            UniqueValidator(queryset=User.objects.all())
+        ]
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = (
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'email'
+        )
+
 
 class PasswordUpdateSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)

@@ -2,9 +2,10 @@
 
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.middleware import get_user
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from core.models import User
@@ -14,6 +15,7 @@ from .serializers import SignUpSerializer, LoginSerializer, RetrieveUpdateSerial
 class SignUpView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = SignUpSerializer
+    permission_classes = [AllowAny]
 
 
 class LoginView(CreateAPIView):
@@ -42,10 +44,15 @@ class UserRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user
+        user = get_user(request=self.request)
+        return user
 
     def delete(self, request, *args, **kwargs):
+        """
+        Переопределил для того чтобы при выходе из профиля, пользователь не удалялся из бд.
+        """
         logout(request)
+        return Response({})
 
 
 class PasswordUpdateView(UpdateAPIView):
