@@ -32,6 +32,7 @@ services:
     env_file:
       - .env_example
     command: >
+      sh -c "python manage.py makemigrations"
       sh -c "python manage.py migrate"
   postgres:
     image: postgres:12.4-alpine
