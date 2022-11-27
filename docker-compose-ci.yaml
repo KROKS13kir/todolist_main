@@ -4,11 +4,14 @@ services:
   frontend:
     image: sermalenk/skypro-front:lesson-34
     ports:
-      - 81:80
+      - 80:80
     depends_on:
       - api
   api:
     image: kroks/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    restart: always
+    environment:
+      POSTGRES_HOST: ${DB_HOST}
     depends_on:
       postgres:
         condition: service_healthy
