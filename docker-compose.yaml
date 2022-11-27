@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   front:
-    image: sermalenk/skypro-front:lesson-35
+    image: sermalenk/skypro-front:lesson-34
     ports:
-    - 80:80
+    - "80:80"
     depends_on:
       - api
   api:
@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"
     restart: always
     env_file:
       - .env_example

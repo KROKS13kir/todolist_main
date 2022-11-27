@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   frontend:
-    image: sermalenk/skypro-front:lesson-35
+    image: sermalenk/skypro-front:lesson-34
     ports:
-      - 81:80
+      - "81:80"
     depends_on:
       - api
   api:
