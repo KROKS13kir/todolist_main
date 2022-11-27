@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   frontend:
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-35
     ports:
-      - "81:80"
+      - 81:80
     depends_on:
       - api
   api:
@@ -14,15 +14,25 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
-    env_file:
-      - .env_example
+    environment:
+      DEBUG: $DEDUG
+      SECRET_KEY: $SECRET_KEY
+      ALLOWED_HOSTS: $ALLOWED_HOSTS
+      SOCIAL_AUTH_VK_OAUTH2_KEY: $VK_OAUTH2_KEY
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: $VK_OAUTH2_SECRET
+      DATABASE_URL: $DATABASE_URL
   migrations:
     image: kroks/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       postgres:
         condition: service_healthy
-    env_file:
-      - .env_example
+    environment:
+      DEBUG: $DEDUG
+      SECRET_KEY: $SECRET_KEY
+      ALLOWED_HOSTS: $ALLOWED_HOSTS
+      SOCIAL_AUTH_VK_OAUTH2_KEY: $VK_OAUTH2_KEY
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: $VK_OAUTH2_SECRET
+      DATABASE_URL: $DATABASE_URL
     command: >
       sh -c "python manage.py makemigrations"
       sh -c "python manage.py migrate"
