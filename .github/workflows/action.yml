@@ -31,16 +31,16 @@ jobs:
         uses: actions/checkout@v3
       - name: render configs
         run: |
-          mkdir deploy_folder
-          cat docker-compose-ci.yaml | envsubst > deploy_folder/docker-compose.yaml
-          cat .env_example | envsubst > deploy_folder/.env_example
+          mkdir deploy
+          cat docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
+          cat .env | envsubst > deploy/.env
       - name: copy file to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          source: "deploy_folder/docker-compose.yaml,deploy_folder/.env_example"
+          source: "deploy/docker-compose.yaml,deploy/.env"
           target: "todolist"
           strip_components: 1
       - name: deploy app
