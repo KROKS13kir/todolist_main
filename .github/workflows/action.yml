@@ -22,7 +22,7 @@ jobs:
       VK_OAUTH2_SECRET: vE9uWVPGL0LMWe71LioR
       SECRET_KEY: django-insecure-k#mffsauvdt_*dp5v-yg^)r#s!o*kv*_k$ia1lvxfd!e%$o9dk
       ALLOWED_HOSTS: [*]
-      DATABASE_URL: DATABASE_URL=psql://postgres:postgres@postgres:5432/todolist
+      DATABASE_URL: DATABASE_URL=psql://postgres:postgres@localhost:5432/todolist
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: postgres
