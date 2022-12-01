@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   frontend:
-    image: sermalenk/skypro-front:lesson-35
+    image: sermalenk/skypro-front:lesson-36
     ports:
-      - 80:80
+      - 81:80
     depends_on:
       - api
   api:
@@ -15,9 +15,8 @@ services:
       migrations:
         condition: service_completed_successfully
     environment:
-      DEBUG: ${DEDUG}
+      DEBUG: ${DEBUG}
       SECRET_KEY: ${SECRET_KEY}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${VK_OAUTH2_SECRET}
       DATABASE_URL: ${DATABASE_URL}
@@ -32,7 +31,6 @@ services:
     environment:
       DEBUG: ${DEDUG}
       SECRET_KEY: ${SECRET_KEY}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${VK_OAUTH2_SECRET}
       DATABASE_URL: ${DATABASE_URL}
@@ -46,7 +44,7 @@ services:
       - "5433:5432"
     restart: always
     env_file:
-      - .env_example
+      - .env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 5s
