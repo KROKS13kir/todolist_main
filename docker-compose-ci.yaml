@@ -4,7 +4,7 @@ services:
   frontend:
     image: sermalenk/skypro-front:lesson-36
     ports:
-      - 81:80
+      - 80:80
     depends_on:
       - api
   api:
@@ -26,7 +26,8 @@ services:
       postgres:
         condition: service_healthy
     command: >
-      bash -c 'python3 manage.py makemigrations && python3 manage.py migrate'
+      sh -c "python manage.py makemigrations"
+      sh -c "python manage.py migrate"
     environment:
       DEBUG: ${DEBUG}
       SECRET_KEY: ${SECRET_KEY}
@@ -40,7 +41,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5433:5432"
+      - "5432:5432"
     restart: always
     env_file:
       - .env_example
