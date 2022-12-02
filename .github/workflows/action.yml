@@ -51,4 +51,5 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd todolist
+            docker-compose down
             docker-compose up -d
