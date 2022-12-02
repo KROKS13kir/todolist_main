@@ -44,7 +44,7 @@ services:
       - "5433:5432"
     restart: always
     env_file:
-      - .env_example
+      - .env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
       interval: 5s
