@@ -8,4 +8,5 @@ sqlparse==0.4.3
 tzdata==2022.6
 social-auth-app-django==5.0.0
 social-auth-core==4.3.0
+django-filter==22.1
 

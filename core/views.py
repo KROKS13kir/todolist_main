@@ -1,6 +1,4 @@
 # Create your views here.
-
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.middleware import get_user
 from rest_framework import status
