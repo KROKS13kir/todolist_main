@@ -26,7 +26,6 @@ services:
       postgres:
         condition: service_healthy
     command: >
-      sh -c "python manage.py makemigrations"
       sh -c "python manage.py migrate"
     environment:
       DEBUG: $DEBUG
@@ -41,7 +40,7 @@ services:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
     ports:
-      - "5432:5432"
+      - "5433:5432"
     restart: always
     env_file:
       - .env
