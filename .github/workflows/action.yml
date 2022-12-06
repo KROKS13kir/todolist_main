@@ -22,10 +22,10 @@ jobs:
       VK_OAUTH2_SECRET: ${{ secrets.VK_OAUTH2_SECRET }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DB_HOST: ${{ secrets.POSTGRES_HOST }}
-      DB_USER: ${{ secrets.POSTGRES_USER }}
-      DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      DB_NAME: ${{ secrets.POSTGRES_NAME }}
+      POSTGRES_HOST: ${{ secrets.HOST }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
     steps:
       - name: clone code
         uses: actions/checkout@v3

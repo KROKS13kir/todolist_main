@@ -34,7 +34,7 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_SECRET: $SOCIAL_AUTH_VK_OAUTH2_SECRET
       DATABASE_URL: $DATABASE_URL
   postgres:
-    image: postgres:15.1-alpine
+    image: postgres:latest
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
