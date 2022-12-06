@@ -27,7 +27,7 @@ services:
     env_file:
       - .env
   postgres:
-    image: postgres:12.4-alpine
+    image: postgres:latest
     env_file:
       - .env
     ports:
