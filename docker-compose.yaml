@@ -32,7 +32,7 @@ services:
     command: >
       sh -c "python manage.py migrate"
   postgres:
-    image: postgres:15.1-alpine
+    image: postgres:latest
     env_file:
       - .env
     ports:
