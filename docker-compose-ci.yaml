@@ -26,6 +26,7 @@ services:
       postgres:
         condition: service_healthy
     command: >
+      sh -c 'python3 manage.py makemigrations'
       sh -c 'python3 manage.py migrate'
     environment:
       DEBUG: ${DEBUG}
