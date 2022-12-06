@@ -30,10 +30,9 @@ services:
     env_file:
       - .env
     command: >
-      sh -c "python manage.py makemigrations"
       sh -c "python manage.py migrate"
   postgres:
-    image: postgres:latest
+    image: postgres:15.1-alpine
     env_file:
       - .env
     ports:
