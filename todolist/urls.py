@@ -18,10 +18,10 @@ from django.urls import path
 from django.urls.conf import include
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    # path('api-auth/', include('rest_framework.urls')),
-    path("core/", include('core.urls')),
-    path('oauth/', include('social_django.urls', namespace='social')),
-    path("goals/", include("goals.urls")),
+    path('admin/', admin.site.urls),
+    path('core/', include('core.urls'), name='core'),
+    path('goals/', include('goals.urls'), name='goals'),
+    path("oauth/", include("social_django.urls", namespace="social")),
+    path('api-auth/', include('rest_framework.urls'))
 
 ]

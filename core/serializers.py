@@ -1,6 +1,8 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
+from django.contrib.auth import authenticate
 
 from core.models import User
 
@@ -44,13 +46,17 @@ class SignUpSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
+    username = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)
 
-    def validated_username(self, input):
-        if not User.objects.filter(username=input).exists():
-            raise serializers.ValidationError(["User with such username doesn't exist"])
-        return input
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise ValidationError('password or username is not correct')
+        attrs["user"] = user
+        return attrs
 
 
 class RetrieveUpdateSerializer(serializers.ModelSerializer):
@@ -73,9 +79,21 @@ class RetrieveUpdateSerializer(serializers.ModelSerializer):
 
 
 class PasswordUpdateSerializer(serializers.Serializer):
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
+    old_password = serializers.CharField(min_length=1, write_only=True)
+    new_password = serializers.CharField(min_length=1, write_only=True, validators=[validate_password])
 
-    def validate_new_password(self, input):
-        validate_password(input)
-        return input
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password')
+
+    def validate(self, attrs):
+        password_old = attrs.get('old_password')
+        user: User = self.instance
+        if not user.check_password(password_old):
+            raise ValidationError({'old_password': 'is incorrect'})
+        return attrs
+
+    def update(self, instance: User, validated_data):
+        instance.set_password(validated_data['new_password'])
+        instance.save(update_fields=['password'])
+        return instance

@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from goals.models import GoalCategory
 from core.serializers import RetrieveUpdateSerializer
+from models.category import Category
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
-        model = GoalCategory
+        model = Category
         read_only_fields = ("id", "created", "updated", "user")
         fields = "__all__"
 
@@ -16,7 +16,7 @@ class CategorySerializer(serializers.ModelSerializer):
     user = RetrieveUpdateSerializer(read_only=True)
 
     class Meta:
-        model = GoalCategory
+        model = Category
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
 
