@@ -4,7 +4,7 @@ services:
   frontend:
     image: sermalenk/skypro-front:lesson-37
     ports:
-      - 80:80
+      - 81:80
     depends_on:
       - api
   api:
@@ -26,9 +26,7 @@ services:
       postgres:
         condition: service_healthy
     command: >
-      bash -c 'python manage.py makemigrations core'
-      bash -c 'python manage.py makemigrations goals'
-      bash -c 'python manage.py migrate'
+      sh -c 'python manage.py migrate'
     environment:
       DEBUG: ${DEBUG}
       SECRET_KEY: ${SECRET_KEY}
