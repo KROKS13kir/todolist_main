@@ -30,9 +30,11 @@ services:
     env_file:
       - .env
     command: >
-      bash -c 'python3 manage.py migrate'
+      bash -c 'python manage.py makemigrations core'
+      bash -c 'python manage.py makemigrations goals'      
+      bash -c 'python manage.py migrate'
   postgres:
-    image: postgres:latest
+    image: postgres:12.4-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

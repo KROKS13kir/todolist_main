@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.serializers import RetrieveUpdateSerializer
-from models.category import Category
+from goals.models.category import Category
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):

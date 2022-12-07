@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from goals.models import Goal
 from core.serializers import RetrieveUpdateSerializer
+from goals.models.goal import Goal
 
 
 class GoalCreateSerializer(serializers.ModelSerializer):

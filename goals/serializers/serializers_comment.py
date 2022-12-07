@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.serializers import RetrieveUpdateSerializer
-from models.comment import Comment
+from goals.models.comment import Comment
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):

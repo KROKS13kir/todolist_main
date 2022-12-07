@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from models.board import BoardParticipant
+from goals.models.board import BoardParticipant
 
 
 class BoardPermissions(permissions.BasePermission):

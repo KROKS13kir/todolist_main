@@ -1,7 +1,6 @@
 from django.db import transaction
 from goals.models.board import BoardParticipant, Board
 from rest_framework import serializers
-import goals.models as models
 from core.models import User
 
 
@@ -9,7 +8,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
-        model = models.Board
+        model = Board
         read_only_fields = ('id', 'created', 'updated')
         fields = '__all__'
 
