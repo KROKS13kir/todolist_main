@@ -30,9 +30,9 @@ services:
     env_file:
       - .env
     command: >
-      bash -c 'python manage.py makemigrations core'
-      bash -c 'python manage.py makemigrations goals'      
-      bash -c 'python manage.py migrate'
+      sh -c 'python manage.py makemigrations core'
+      sh -c 'python manage.py makemigrations goals'      
+      sh -c 'python manage.py migrate'
   postgres:
     image: postgres:12.4-alpine
     environment:

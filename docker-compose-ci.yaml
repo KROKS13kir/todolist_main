@@ -4,7 +4,7 @@ services:
   frontend:
     image: sermalenk/skypro-front:lesson-37
     ports:
-      - 80:80
+      - 81:80
     depends_on:
       - api
   api:
@@ -26,6 +26,7 @@ services:
       postgres:
         condition: service_healthy
     command: >
+      sh -c "python manage.py makemigrations"
       sh -c 'python manage.py migrate'
     environment:
       DEBUG: ${DEBUG}
@@ -47,6 +48,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
 
 volumes:
   pg_data:
