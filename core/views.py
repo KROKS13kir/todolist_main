@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from core.models import User
-from .serializers import SignUpSerializer, LoginSerializer, RetrieveUpdateSerializer, PasswordUpdateSerializer
+from core.serializers import LoginSerializer, RetrieveUpdateSerializer, PasswordUpdateSerializer, SignUpSerializer
 
 
 class SignUpView(CreateAPIView):

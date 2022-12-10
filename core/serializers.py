@@ -30,9 +30,6 @@ class SignUpSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, attrs):
-        """
-        Переопределил пустой validate для проверки пароля, так же достаю и удаляю password_repeat.
-        """
         password_repeat = attrs.pop('password_repeat', None)
         password = attrs.get('password')
 
