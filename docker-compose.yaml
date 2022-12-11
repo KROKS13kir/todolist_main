@@ -30,9 +30,7 @@ services:
     env_file:
       - .env
     command: >
-      sh -c 'python manage.py makemigrations core'
-      sh -c 'python manage.py makemigrations goals'      
-      sh -c 'python manage.py migrate'
+      sh -c 'python manage.py makemigrations core && python manage.py makemigrations goals && python manage.py migrate'
   postgres:
     image: postgres:12.4-alpine
     environment:
@@ -50,7 +48,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - ./pg_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
 
 volumes:
   pg_data:

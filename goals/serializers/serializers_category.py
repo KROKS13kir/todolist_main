@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from core.serializers import RetrieveUpdateSerializer
 from goals.models.board import BoardParticipant
 from goals.models.category import Category
@@ -20,7 +22,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         ).exists()
         if roll:
             return attrs
-        raise serializers.ValidationError('You do not have permission to perform this action')
+        raise ValidationError('You do not have permission to perform this action')
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -33,8 +35,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def validate_category(self, value):
         if value.is_deleted:
-            raise serializers.ValidationError('not allowed in deleted category')
+            raise ValidationError('not allowed in deleted category')
         if value.user != self.context['request'].user:
-            raise serializers.ValidationError('not owner of category')
+            raise ValidationError('not owner of category')
 
         return value

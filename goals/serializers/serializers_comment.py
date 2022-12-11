@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from core.serializers import RetrieveUpdateSerializer
 from goals.models.board import BoardParticipant
 from goals.models.comment import Comment
@@ -20,7 +22,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         ).exists()
         if roll:
             return attrs
-        raise serializers.ValidationError('You do not have permission to perform this action')
+        raise ValidationError('You do not have permission to perform this action')
 
 
 class CommentSerializer(serializers.ModelSerializer):
