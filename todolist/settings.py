@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'core',
     'django_filters',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
             ],
         },
     },
@@ -161,3 +163,5 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API for todolist application',
     'VERSION': '1.0.0',
 }
+
+TG_TOKEN = env.str('TG_TOKEN')

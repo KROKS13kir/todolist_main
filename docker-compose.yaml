@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   frontend:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     ports:
     - 80:80
     depends_on:
@@ -30,7 +30,19 @@ services:
     env_file:
       - .env
     command: >
-      sh -c 'python manage.py makemigrations core && python manage.py makemigrations goals && python manage.py migrate'
+      sh -c 'python manage.py makemigrations core && python manage.py makemigrations goals && python manage.py makemigrations bot && python manage.py migrate'
+  bot:
+    build:
+      context: .
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    command: >
+      sh -c "python manage.py runbot"
   postgres:
     image: postgres:12.4-alpine
     environment:

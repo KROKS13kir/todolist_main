@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   frontend:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     ports:
       - 81:80
     depends_on:
@@ -20,19 +20,37 @@ services:
       VK_OAUTH2_KEY: ${VK_OAUTH2_KEY}
       VK_OAUTH2_SECRET: ${VK_OAUTH2_SECRET}
       DATABASE_URL: ${DATABASE_URL}
+      TG_TOKEN: ${TG_TOKEN}
   migrations:
     image: kroks/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       postgres:
         condition: service_healthy
     command: >
-      sh -c 'python manage.py makemigrations core && python manage.py makemigrations goals && python manage.py migrate'
+      sh -c 'python manage.py makemigrations core && python manage.py makemigrations goals && python manage.py makemigrations bot && python manage.py migrate'
     environment:
       DEBUG: ${DEBUG}
       SECRET_KEY: ${SECRET_KEY}
       VK_OAUTH2_KEY: ${VK_OAUTH2_KEY}
       VK_OAUTH2_SECRET: ${VK_OAUTH2_SECRET}
       DATABASE_URL: ${DATABASE_URL}
+      TG_TOKEN: ${TG_TOKEN}
+  bot:
+    image: kroks/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    environment:
+      DEBUG: ${DEBUG}
+      SECRET_KEY: ${SECRET_KEY}
+      VK_OAUTH2_KEY: ${VK_OAUTH2_KEY}
+      VK_OAUTH2_SECRET: ${VK_OAUTH2_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      TG_TOKEN: ${TG_TOKEN}
+    command: >
+      sh -c "python manage.py runbot"
   postgres:
     image: postgres:12.4-alpine
     environment:
