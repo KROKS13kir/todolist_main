@@ -40,7 +40,7 @@ services:
     depends_on:
       migrations:
         condition: service_completed_successfully
-      db:
+      postgres:
         condition: service_healthy
     environment:
       DEBUG: ${DEBUG}
