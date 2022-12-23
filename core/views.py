@@ -1,5 +1,6 @@
 # Create your views here.
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.sites import requests
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -17,7 +18,7 @@ class SignUpView(CreateAPIView):
 class LoginView(CreateAPIView):
     serializer_class = LoginSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: requests, *args: str, **kwargs: int) -> Response:
         serializer: LoginSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
@@ -31,10 +32,13 @@ class UserRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
     serializer_class = RetrieveUpdateSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user
 
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request: requests, *args: str, **kwargs: int) -> Response:
+        """
+        При выходе из профиля, пользователь не должен удалятся из бд.
+        """
         logout(request)
         return Response({})
 
@@ -44,5 +48,5 @@ class PasswordUpdateView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PasswordUpdateSerializer
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user

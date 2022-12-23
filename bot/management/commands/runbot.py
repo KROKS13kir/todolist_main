@@ -7,11 +7,11 @@ import todolist.settings as settings
 
 
 class Command(BaseCommand):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: str, **kwargs: int):
         super().__init__(*args, **kwargs)
         self.tg_client = TgClient(settings.TG_TOKEN)
 
-    def verified_user(self, tg_user, msg: Message):
+    def verified_user(self, tg_user: TgUser, msg: Message) -> None:
         if msg.text == '/goals':
             BotGoal(tg_user=tg_user, msg=msg, tg_client=self.tg_client).get_goal()
         elif msg.text == '/start':
@@ -24,7 +24,7 @@ class Command(BaseCommand):
         elif msg.text == '/cancel':
             self.tg_client.send_message(
                 chat_id=msg.chat.id,
-                text=f'Операция отменена!✅'
+                text=f'Операция отменена!'
             )
         else:
             self.tg_client.send_message(
@@ -39,13 +39,13 @@ class Command(BaseCommand):
             username=msg.from_.username
         )
         if create:
-            self.tg_client.send_message(chat_id=msg.chat.id, text='Зарегистрировал вас!👌')
+            self.tg_client.send_message(chat_id=msg.chat.id, text='Зарегистрировал вас!')
         if tg_user.user:
             self.verified_user(tg_user=tg_user, msg=msg)
         else:
             BotGoal(tg_user=tg_user, msg=msg, tg_client=self.tg_client).check_user()
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: str, **kwargs: int) -> None:
         offset = 0
 
         while True:

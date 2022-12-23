@@ -29,7 +29,10 @@ class SignUpSerializer(serializers.ModelSerializer):
             'password_repeat'
         ]
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
+        """
+        Переопределение validate для проверки пароля, удаление password_repeat.
+        """
         password_repeat = attrs.pop('password_repeat', None)
         password = attrs.get('password')
 
@@ -37,7 +40,7 @@ class SignUpSerializer(serializers.ModelSerializer):
             raise ValidationError('Passwords do not match')
         return attrs
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> User:
         user = User.objects.create_user(**validated_data)
         return user
 
@@ -46,7 +49,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
         username = attrs.get('username')
         password = attrs.get('password')
         user = authenticate(username=username, password=password)
@@ -57,7 +60,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class RetrieveUpdateSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
+    iid = serializers.IntegerField(read_only=True)
     username = serializers.CharField(
         validators=[
             UniqueValidator(queryset=User.objects.all())
@@ -83,14 +86,18 @@ class PasswordUpdateSerializer(serializers.Serializer):
         model = User
         fields = ('old_password', 'new_password')
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict) -> dict:
+        """
+        Переопределение validate для проверки пароля, удаление password_repeat.
+        """
         password_old = attrs.get('old_password')
+
         user: User = self.instance
         if not user.check_password(password_old):
             raise ValidationError({'old_password': 'is incorrect'})
         return attrs
 
-    def update(self, instance: User, validated_data):
+    def update(self, instance: User, validated_data: dict) -> User:
         instance.set_password(validated_data['new_password'])
         instance.save(update_fields=['password'])
         return instance

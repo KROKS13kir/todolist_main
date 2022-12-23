@@ -1,5 +1,5 @@
 import string
-from random import random
+from random import sample
 
 from django.db import models
 from core.models import User
@@ -21,7 +21,7 @@ class TgUser(models.Model):
     def set_verification_code(self) -> None:
         length = 10  # Длина кода подтверждения
         digits = string.digits
-        verif_code = ''.join(random.sample(digits, length))
+        verif_code = ''.join(sample(digits, length))
         self.verification_code = verif_code
 
     class Meta:

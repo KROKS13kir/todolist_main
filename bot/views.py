@@ -1,3 +1,4 @@
+from django.contrib.sites import requests
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ class VerificationView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TgUserSerializer
 
-    def patch(self, request, *args, **kwargs):
+    def patch(self, request: requests, *args: str, **kwargs: int) -> Response:
         serializer: TgUserSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
