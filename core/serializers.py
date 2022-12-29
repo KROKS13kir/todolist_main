@@ -60,7 +60,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class RetrieveUpdateSerializer(serializers.ModelSerializer):
-    iid = serializers.IntegerField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
     username = serializers.CharField(
         validators=[
             UniqueValidator(queryset=User.objects.all())
