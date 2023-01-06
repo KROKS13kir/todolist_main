@@ -7,38 +7,37 @@ from marshmallow import EXCLUDE, Schema
 
 @dataclass
 class MessageFrom:
+    """Telegram API: https://core.telegram.org/bots/api#user"""
     id: int
-    is_bot: bool
-    first_name: str
-    username: str
+    first_name: Optional[str] = field(default=None)
     last_name: Optional[str] = field(default=None)
-
+    username: Optional[str] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
 
 
 @dataclass
-class MessageChat:
+class Chat:
+    """Telegram API: https://core.telegram.org/bots/api#chat"""
     id: int
     type: str
     first_name: Optional[str] = field(default=None)
-    username: Optional[str] = field(default=None)
     last_name: Optional[str] = field(default=None)
+    username: Optional[str] = field(default=None)
     title: Optional[str] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
 
 
-
-
 @dataclass
 class Message:
+    """Telegram API: https://core.telegram.org/bots/api#message"""
     message_id: int
-    from_: MessageFrom = field(metadata={'data_key': 'from'})
-    chat: MessageChat
-    date: int
+    chat: Chat
+    # override usage of keyword "from" - add underscore and metadata to map to data key
+    from_: Optional[MessageFrom] = field(metadata=dict(data_key='from'), default=None)
     text: Optional[str] = field(default=None)
 
     class Meta:
