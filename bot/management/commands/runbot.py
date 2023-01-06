@@ -7,6 +7,7 @@ import todolist.settings as settings
 
 
 class Command(BaseCommand):
+
     def __init__(self, *args: str, **kwargs: int):
         super().__init__(*args, **kwargs)
         self.tg_client = TgClient(settings.TG_TOKEN)
