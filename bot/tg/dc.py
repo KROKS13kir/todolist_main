@@ -1,5 +1,5 @@
 from dataclasses import field
-from typing import List, ClassVar, Type
+from typing import List, ClassVar, Type, Optional
 
 from marshmallow_dataclass import dataclass
 from marshmallow import EXCLUDE, Schema
@@ -10,8 +10,9 @@ class MessageFrom:
     id: int
     is_bot: bool
     first_name: str
-    last_name: str | None
     username: str
+    last_name: Optional[str] = field(default=None)
+
 
     class Meta:
         unknown = EXCLUDE
@@ -20,15 +21,14 @@ class MessageFrom:
 @dataclass
 class MessageChat:
     id: int
-    first_name: str | None
-    username: str | None
-    last_name: str | None
     type: str
-    title: str | None
+    first_name: Optional[str] = field(default=None)
+    username: Optional[str] = field(default=None)
+    last_name: Optional[str] = field(default=None)
+    title: Optional[str] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
-
 
 
 
@@ -39,25 +39,25 @@ class Message:
     from_: MessageFrom = field(metadata={'data_key': 'from'})
     chat: MessageChat
     date: int
-    text: str
+    text: Optional[str] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
 
 
 @dataclass
-class UpdateOdj:
+class UpdateObj:
+    """Telegram API: https://core.telegram.org/bots/api#getting-updates"""
     update_id: int
-    message: Message
+    message: Optional[Message] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
-
 
 @dataclass
 class GetUpdatesResponse:
     ok: bool
-    result: List[UpdateOdj]
+    result: List[UpdateObj]
 
     Schema: ClassVar[Type[Schema]] = Schema
 

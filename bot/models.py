@@ -21,8 +21,8 @@ class TgUser(models.Model):
     def set_verification_code(self) -> None:
         length = 10  # Длина кода подтверждения
         digits = string.digits
-        verif_code = ''.join(sample(digits, length))
-        self.verification_code = verif_code
+        v_code = ''.join(sample(digits, length))
+        self.verification_code = v_code
 
     class Meta:
         verbose_name = 'TG User'

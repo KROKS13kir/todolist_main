@@ -14,7 +14,7 @@ class VerificationView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TgUserSerializer
 
-    def patch(self, request: requests, *args: str, **kwargs: int) -> Response:
+    def patch(self, request, *args, **kwargs):
         serializer: TgUserSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
