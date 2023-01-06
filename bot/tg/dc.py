@@ -5,7 +5,6 @@ from marshmallow_dataclass import dataclass
 from marshmallow import EXCLUDE, Schema
 
 
-@dataclass
 class MessageFrom:
     id: int
     is_bot: bool
