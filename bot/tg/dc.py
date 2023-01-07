@@ -35,7 +35,7 @@ class MessageChat:
 class Message:
     message_id: int
     msg_from: Optional[MessageFrom] = field(metadata=dict(data_key='from'), default=None)
-    chat: MessageChat
+    chat: Optional[MessageChat]
     date: int
     text: str | None
 
