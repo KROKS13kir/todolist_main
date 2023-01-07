@@ -1,5 +1,5 @@
 from dataclasses import field
-from typing import List
+from typing import List, Optional
 
 import marshmallow_dataclass
 from marshmallow_dataclass import dataclass
@@ -34,7 +34,7 @@ class MessageChat:
 @dataclass
 class Message:
     message_id: int
-    msg_from: MessageFrom = field(metadata={'data_key': 'from'})
+    msg_from: Optional[MessageFrom] = field(metadata=dict(data_key='from'), default=None)
     chat: MessageChat
     date: int
     text: str | None
