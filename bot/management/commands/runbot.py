@@ -96,7 +96,7 @@ class Command(BaseCommand):
             self.tg_client.send_message(
                 chat_id=msg.chat.id,
                 text=f'Подтвердите свой аккаунт!'
-                     f'Для подтверждения необходимо ввести код: {tg_user.verification_code} на сайте'
+                     f' Для подтверждения необходимо ввести код: {tg_user.verification_code} на сайте'
             )
             return None
 
