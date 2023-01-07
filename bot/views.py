@@ -9,7 +9,6 @@ import todolist.settings as settings
 from bot.models import TgUser
 from bot.serializers import TgUserSerializer
 from bot.tg.client import TgClient
-from goals.models.board import Board, BoardParticipant
 
 
 class BotVerifyView(generics.UpdateAPIView):
