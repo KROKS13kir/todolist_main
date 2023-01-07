@@ -10,9 +10,9 @@ from marshmallow import EXCLUDE
 class MessageFrom:
     id: int
     is_bot: bool
-    first_name: str
+    first_name: str | None
     last_name: str | None
-    username: str
+    username: str | None
 
     class Meta:
         unknown = EXCLUDE
@@ -21,9 +21,9 @@ class MessageFrom:
 @dataclass
 class MessageChat:
     id: int
-    first_name: str
+    first_name: str | None
     last_name: str | None
-    username: str
+    username: str | None
     type: str
     title: str | None
 
