@@ -4,7 +4,6 @@ from django.core.management.base import BaseCommand
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from bot.tg.dc import Message
-from bot.utils.bot_utils import BotGoal
 import todolist.settings as settings
 from goals.models.category import Category
 from goals.models.goal import Goal
