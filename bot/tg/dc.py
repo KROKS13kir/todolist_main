@@ -1,5 +1,5 @@
 from dataclasses import field
-from typing import List
+from typing import List, Optional
 import marshmallow_dataclass
 from marshmallow_dataclass import dataclass
 from marshmallow import EXCLUDE
@@ -45,7 +45,7 @@ class Message:
 @dataclass
 class UpdateObj:
     update_id: int
-    message: Message
+    message: Optional[Message]
 
     class Meta:
         unknown = EXCLUDE
