@@ -88,6 +88,8 @@ class Command(BaseCommand):
         )
 
     def handle_message(self, msg: Message):
+        if msg is None:
+            return None
         tg_user, created = TgUser.objects.get_or_create(
             tg_user_id=msg.msg_from.id,
             tg_chat_id=msg.chat.id, )
